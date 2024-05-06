@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Database - Genre</title>
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+p,h1 {
+    text-align: center;
+    margin-top: 30px;
+    color: #333;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #333;
+    color: #fff;
+}
+
+  </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/genre/action">Action</a>
+        <a href="/genre/drama">Drama</a>
+        <a href="/genre/sci-fi">Sci-Fi</a>
+    </nav>
+    <h1>Daftar Film Berdasarkan Genre</h1>
+    <table id="filmTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Rating</th>
+                <th>Director</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+
+    <script>
+        // Ambil genre dari URL
+        const genre = window.location.pathname.split('/').pop();
+
+        // Kirim permintaan ke server untuk mendapatkan data film berdasarkan genre
+        fetch(`/api/genre/${genre}`)
+            .then(response => response.json())
+            .then(films => {
+                // Dapatkan tabel film
+                const filmTable = document.getElementById('filmTable');
+
+                // Loop melalui setiap film dan tambahkan baris ke dalam tabel
+                films.forEach(film => {
+                    const row = filmTable.insertRow();
+                    row.insertCell(0).textContent = film.title;
+                    row.insertCell(1).textContent = film.year;
+                    row.insertCell(2).textContent = film.rating;
+                    row.insertCell(3).textContent = film.director;
+                    row.insertCell(4).textContent = film.genre;
+                });
+            })
+            .catch(error => console.error('Terjadi kesalahan:', error));
+    </script>
+</body>
+</html>
